@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import dynamic from 'next/dynamic';
 import React, { useState } from "react";
 import Image from "next/image";
 import {
@@ -8,7 +8,6 @@ import {
   Phone,
   Linkedin,
   MapPin,
-  Github,
   Code,
   Database,
   Globe,
@@ -18,86 +17,194 @@ import {
   ExternalLink,
   Download,
   ChevronDown,
+  Send,
 } from "lucide-react";
 import { FloatingNav } from "@/components/ui/floating-navbar";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import { Spotlight } from "@/components/ui/spotlight";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Timeline } from "@/components/ui/timeline";
 import { MovingBorderButton } from "@/components/ui/moving-border";
-import { BackgroundBeams } from "@/components/ui/background-beams";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
 import { SplineScene } from "@/components/ui/splite";
 
+const AnoAI = dynamic(() => import('@/components/ui/animated-shader-background'), {
+  ssr: false,
+  loading: () => <div className="fixed inset-0 bg-black" />
+});
 
 export default function PortfolioUpgraded() {
   const [activeSection, setActiveSection] = useState("home");
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  // Configuration des beams animés
-  const beamPaths = [
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setStatus('idle'), 5000);
+      } else {
+        console.error('Erreur:', data.error);
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 5000);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi:', error);
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
+    }
+  };
+
+  // Configuration PulseBeams
+  const beams = [
     {
-      path: "M0 100 Q 200 50 400 100 T 800 100",
+      path: "M269 220.5H16.5C10.9772 220.5 6.5 224.977 6.5 230.5V398.5",
       gradientConfig: {
-        initial: { x1: "0%", x2: "0%", y1: "0%", y2: "0%" },
+        initial: { x1: "0%", x2: "0%", y1: "80%", y2: "100%" },
         animate: {
-          x1: ["0%", "100%"],
-          x2: ["0%", "100%"],
-          y1: ["0%", "0%"],
-          y2: ["0%", "0%"],
+          x1: ["0%", "0%", "200%"],
+          x2: ["0%", "0%", "180%"],
+          y1: ["80%", "0%", "0%"],
+          y2: ["100%", "20%", "20%"],
         },
         transition: {
-          duration: 3,
+          duration: 2,
           repeat: Infinity,
           repeatType: "loop" as const,
           ease: "linear",
-          repeatDelay: 0,
+          repeatDelay: 2,
+          delay: Math.random() * 2,
         },
       },
+      connectionPoints: [
+        { cx: 6.5, cy: 398.5, r: 6 },
+        { cx: 269, cy: 220.5, r: 6 }
+      ]
     },
     {
-      path: "M0 200 Q 300 150 600 200 T 1200 200",
+      path: "M568 200H841C846.523 200 851 195.523 851 190V40",
       gradientConfig: {
-        initial: { x1: "100%", x2: "100%", y1: "0%", y2: "0%" },
+        initial: { x1: "0%", x2: "0%", y1: "80%", y2: "100%" },
         animate: {
-          x1: ["100%", "0%"],
-          x2: ["100%", "0%"],
-          y1: ["0%", "0%"],
-          y2: ["0%", "0%"],
+          x1: ["20%", "100%", "100%"],
+          x2: ["0%", "90%", "90%"],
+          y1: ["80%", "80%", "-20%"],
+          y2: ["100%", "100%", "0%"],
         },
         transition: {
-          duration: 4,
+          duration: 2,
           repeat: Infinity,
           repeatType: "loop" as const,
           ease: "linear",
-          repeatDelay: 0,
-          delay: 1,
+          repeatDelay: 2,
+          delay: Math.random() * 2,
         },
       },
+      connectionPoints: [
+        { cx: 851, cy: 34, r: 6.5 },
+        { cx: 568, cy: 200, r: 6 }
+      ]
     },
     {
-      path: "M0 300 Q 250 250 500 300 T 1000 300",
+      path: "M425.5 274V333C425.5 338.523 421.023 343 415.5 343H152C146.477 343 142 347.477 142 353V426.5",
       gradientConfig: {
-        initial: { x1: "0%", x2: "0%", y1: "0%", y2: "0%" },
+        initial: { x1: "0%", x2: "0%", y1: "80%", y2: "100%" },
         animate: {
-          x1: ["0%", "100%"],
-          x2: ["0%", "100%"],
-          y1: ["0%", "0%"],
-          y2: ["0%", "0%"],
+          x1: ["20%", "100%", "100%"],
+          x2: ["0%", "90%", "90%"],
+          y1: ["80%", "80%", "-20%"],
+          y2: ["100%", "100%", "0%"],
         },
         transition: {
-          duration: 3.5,
+          duration: 2,
           repeat: Infinity,
           repeatType: "loop" as const,
           ease: "linear",
-          repeatDelay: 0,
-          delay: 0.5,
+          repeatDelay: 2,
+          delay: Math.random() * 2,
         },
       },
+      connectionPoints: [
+        { cx: 142, cy: 427, r: 6.5 },
+        { cx: 425.5, cy: 274, r: 6 }
+      ]
     },
+    {
+      path: "M493 274V333.226C493 338.749 497.477 343.226 503 343.226H760C765.523 343.226 770 347.703 770 353.226V427",
+      gradientConfig: {
+        initial: { x1: "40%", x2: "50%", y1: "160%", y2: "180%" },
+        animate: {
+          x1: "0%",
+          x2: "10%",
+          y1: "-40%",
+          y2: "-20%",
+        },
+        transition: {
+          duration: 2,
+          repeat: Infinity,
+          repeatType: "loop" as const,
+          ease: "linear",
+          repeatDelay: 2,
+          delay: Math.random() * 2,
+        },
+      },
+      connectionPoints: [
+        { cx: 770, cy: 427, r: 6.5 },
+        { cx: 493, cy: 274, r: 6 }
+      ]
+    },
+    {
+      path: "M380 168V17C380 11.4772 384.477 7 390 7H414",
+      gradientConfig: {
+        initial: { x1: "-40%", x2: "-10%", y1: "0%", y2: "20%" },
+        animate: {
+          x1: ["40%", "0%", "0%"],
+          x2: ["10%", "0%", "0%"],
+          y1: ["0%", "0%", "180%"],
+          y2: ["20%", "20%", "200%"],
+        },
+        transition: {
+          duration: 2,
+          repeat: Infinity,
+          repeatType: "loop" as const,
+          ease: "linear",
+          repeatDelay: 2,
+          delay: Math.random() * 2,
+        },
+      },
+      connectionPoints: [
+        { cx: 420.5, cy: 6.5, r: 6 },
+        { cx: 380, cy: 168, r: 6 }
+      ]
+    }
   ];
+
+  const gradientColors = {
+    start: "#18CCFC",
+    middle: "#6344F5",
+    end: "#AE48FF"
+  };
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -131,28 +238,27 @@ export default function PortfolioUpgraded() {
     return icons[iconName] || <Code className="h-6 w-6 text-blue-400" />;
   };
 
-  // Timeline data preparation avec glass-card
   const timelineData = experiences.map((exp) => ({
     title: exp.year,
     content: (
-      <div className="glass-card glow-primary animate-slide-up">
-        <h3 className="gradient-text-primary text-2xl font-bold mb-2">{exp.title}</h3>
-        <p className="gradient-text-secondary text-lg font-semibold mb-1">{exp.company}</p>
-        <p className="text-neutral-400 text-sm mb-4">{exp.location}</p>
-        <p className="text-neutral-300 mb-4">{exp.description}</p>
-        <ul className="space-y-2 mb-4">
+      <div className="glass-card glow-primary animate-slide-up p-4 md:p-5">
+        <h3 className="gradient-text-primary text-xl md:text-2xl font-bold mb-2 leading-tight">{exp.title}</h3>
+        <p className="gradient-text-secondary text-base md:text-lg font-semibold mb-1">{exp.company}</p>
+        <p className="text-neutral-400 text-xs md:text-sm mb-3">{exp.location}</p>
+        <p className="text-neutral-300 text-sm md:text-base mb-3 leading-relaxed">{exp.description}</p>
+        <ul className="space-y-1.5 mb-3">
           {exp.points.map((point, idx) => (
-            <li key={idx} className="flex items-start gap-2 text-neutral-400 text-sm">
-              <span className="text-cyan-400 mt-1">•</span>
-              <span>{point}</span>
+            <li key={idx} className="flex items-start gap-2 text-neutral-400 text-xs md:text-sm">
+              <span className="text-cyan-400 mt-0.5 flex-shrink-0">•</span>
+              <span className="leading-snug">{point}</span>
             </li>
           ))}
         </ul>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {exp.skills.map((skill, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full text-xs text-blue-300 hover:bg-blue-500/30 hover:scale-105 transition-all cursor-default"
+              className="px-2 py-0.5 bg-blue-500/20 border border-blue-500/30 rounded-full text-[10px] md:text-xs text-blue-300 hover:bg-blue-500/30 hover:scale-105 transition-all cursor-default"
             >
               {skill}
             </span>
@@ -163,42 +269,49 @@ export default function PortfolioUpgraded() {
   }));
 
   return (
-    <div className="relative w-full min-h-screen bg-neutral-950 overflow-hidden">
-      {/* Background Effects avec animations */}
+    <div className="relative w-full min-h-screen bg-black overflow-hidden">
+      {/* Background Animé - AnoAI */}
       <div className="fixed inset-0 z-0">
-        <BackgroundBeams />
-        {/* Pattern de points en arrière-plan */}
-        <div className="absolute inset-0 bg-dot-pattern opacity-20" />
+        <AnoAI />
+        {/* Overlay pour améliorer la lisibilité */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       {/* Floating Navigation */}
-      <FloatingNav navItems={navItems} />
+      <FloatingNav navItems={navItems} onNavItemClick={function (id: string): void {
+        throw new Error("Function not implemented.");
+      }} />
 
-      {/* Hero Section - AMÉLIORÉ avec Spline 3D */}
+      {/* Hero Section avec PulseBeams */}
       <section
         id="home"
         className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden"
       >
-        {/* Spline 3D Background */}
-        <div className="absolute inset-0 z-0">
+        {/* PulseBeams Effect */}
+        <div className="absolute inset-0 z-[1] opacity-30">
+          <PulseBeams
+            beams={beams}
+            gradientColors={gradientColors}
+            className="bg-transparent"
+          />
+        </div>
+
+        {/* Spline 3D (optionnel - peut être retiré si trop chargé) */}
+        <div className="absolute inset-0 z-[2] opacity-20">
           <SplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
           />
-          {/* Overlay gradient pour améliorer la lisibilité */}
-          <div className="absolute inset-0 bg-gradient-to-b from-neutral-950/30 via-neutral-950/50 to-neutral-950/90" />
         </div>
 
-        {/* Spotlight Effect */}
         <Spotlight
           className="-top-40 left-0 md:left-60 md:-top-20 z-[5]"
           fill="white"
         />
         
         <div className="relative z-10 max-w-4xl mx-auto text-center">
-          {/* Profile Image avec animate-float */}
           <div className="mb-8 flex justify-center animate-fade-in">
-            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-blue-500/50 glow-combined animate-float">
+            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-blue-400/70 glow-combined animate-float shadow-2xl shadow-blue-500/50">
               <Image
                 src="/profile.jpg"
                 alt={personalInfo.name}
@@ -210,28 +323,24 @@ export default function PortfolioUpgraded() {
             </div>
           </div>
 
-          {/* Name avec gradient-text */}
           <div className="animate-slide-up">
             <h1 className="gradient-text text-5xl md:text-7xl font-bold mb-6 text-shadow-glow">
               {personalInfo.name}
             </h1>
           </div>
 
-          {/* Typewriter Title */}
           <div className="animate-slide-up stagger-1">
             <TypewriterEffect words={typewriterWords} className="mb-6" />
           </div>
 
-          {/* Description */}
-          <p className="text-lg md:text-xl text-neutral-400 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up stagger-2">
+          <p className="text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up stagger-2 drop-shadow-lg">
             {personalInfo.description}
           </p>
 
-          {/* CTA Buttons avec btn-glow */}
           <div className="flex flex-wrap justify-center gap-4 mb-12 animate-slide-up stagger-3">
             <MovingBorderButton
               borderRadius="1.75rem"
-              className="btn-glow bg-slate-900 text-white border-slate-800"
+              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
               as="a"
               href={`mailto:${personalInfo.email}`}
             >
@@ -241,7 +350,7 @@ export default function PortfolioUpgraded() {
 
             <MovingBorderButton
               borderRadius="1.75rem"
-              className="btn-glow bg-slate-900 text-white border-slate-800"
+              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
               as="a"
               href={personalInfo.linkedin}
               target="_blank"
@@ -252,7 +361,7 @@ export default function PortfolioUpgraded() {
 
             <MovingBorderButton
               borderRadius="1.75rem"
-              className="btn-glow bg-slate-900 text-white border-slate-800"
+              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
               as="button"
             >
               <Download className="mr-2 h-5 w-5" />
@@ -260,7 +369,6 @@ export default function PortfolioUpgraded() {
             </MovingBorderButton>
           </div>
 
-          {/* Scroll Indicator */}
           <button
             onClick={() => scrollToSection("about")}
             className="animate-bounce text-blue-400 hover:text-blue-300 transition-colors pulse-glow"
@@ -270,64 +378,49 @@ export default function PortfolioUpgraded() {
         </div>
       </section>
 
-      {/* About Section - AMÉLIORÉ */}
+      {/* About Section */}
       <section id="about" className="relative py-20 px-4">
         <div className="max-w-4xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-16 animate-slide-up">
+          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
             À propos
           </h2>
 
-          <div className="glass-card animated-border shimmer animate-scale-in">
-            <p className="text-lg text-neutral-300 leading-relaxed mb-6">
-              Je suis actuellement étudiant en <span className="gradient-text-primary font-semibold">Master of Science</span> en 
+          <div className="glass-card animated-border shimmer animate-scale-in p-5 md:p-6 backdrop-blur-xl bg-slate-900/60">
+            <p className="text-sm md:text-base text-neutral-200 leading-relaxed mb-3">
+              Je suis étudiant en <span className="gradient-text-primary font-semibold">Master of Science</span> en 
               Informatique et Ingénierie des Données à <span className="gradient-text-secondary font-semibold">Polytech Annecy</span>, 
-              avec une graduation prévue en septembre 2027. Mon parcours académique est axé sur la science des données, 
-              l'intelligence artificielle, le développement logiciel et l'informatique centrée sur l'utilisateur.
-            </p>
-            <p className="text-lg text-neutral-300 leading-relaxed mb-8">
-              J'ai acquis une solide expérience pratique à travers divers projets et stages, incluant le développement 
-              d'applications web, l'analyse de données et la gestion de projets techniques. Passionné par l'innovation 
-              technologique et son impact social.
+              avec une graduation prévue en 2027.
             </p>
 
-            {/* Contact Info Grid avec glow effects */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-4 glass-card hover:glow-primary transition-all">
-                <MapPin className="h-5 w-5 text-blue-400" />
-                <span className="text-neutral-300">{personalInfo.location}</span>
+            <p className="text-sm md:text-base text-neutral-200 leading-relaxed mb-4">
+              Passionné par la data science, l'IA et le développement logiciel, j'ai développé 
+              une expertise via divers projets techniques.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              <div className="flex items-center gap-2.5 p-2.5 glass-card hover:glow-primary transition-all backdrop-blur-md bg-slate-800/40">
+                <MapPin className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                <span className="text-neutral-200 text-sm truncate">{personalInfo.location}</span>
               </div>
-              <div className="flex items-center gap-3 p-4 glass-card hover:glow-primary transition-all">
-                <Phone className="h-5 w-5 text-blue-400" />
-                <span className="text-neutral-300">{personalInfo.phone}</span>
+
+              <div className="flex items-center gap-2.5 p-2.5 glass-card hover:glow-primary transition-all backdrop-blur-md bg-slate-800/40">
+                <Phone className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                <span className="text-neutral-200 text-sm">{personalInfo.phone}</span>
               </div>
-              <div className="flex items-center gap-3 p-4 glass-card hover:glow-secondary transition-all md:col-span-2">
-                <Mail className="h-5 w-5 text-cyan-400" />
-                <span className="text-neutral-300">{personalInfo.email}</span>
+
+              <div className="flex items-center gap-2.5 p-2.5 glass-card hover:glow-secondary transition-all md:col-span-2 backdrop-blur-md bg-slate-800/40">
+                <Mail className="h-4 w-4 text-cyan-400 flex-shrink-0" />
+                <span className="text-neutral-200 text-sm truncate">{personalInfo.email}</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Skills Section - AMÉLIORÉ avec Bento Grid et PulseBeams */}
+      {/* Skills Section */}
       <section id="skills" className="relative py-20 px-4">
-        {/* PulseBeams Background */}
-        <PulseBeams
-          beams={beamPaths}
-          className="absolute inset-0 opacity-30"
-          width={1200}
-          height={800}
-          baseColor="rgba(59, 130, 246, 0.2)"
-          accentColor="rgba(59, 130, 246, 0.4)"
-          gradientColors={{
-            start: "#3b82f6",
-            middle: "#06b6d4",
-            end: "#8b5cf6",
-          }}
-        />
-        
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-16 animate-slide-up">
+          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
             Compétences
           </h2>
 
@@ -335,20 +428,20 @@ export default function PortfolioUpgraded() {
             {skills.map((skill, idx) => (
               <BentoGridItem
                 key={idx}
-                title={<span className="gradient-text-primary">{skill.title}</span>}
-                description={skill.description}
+                title={<span className="gradient-text-primary text-base md:text-lg">{skill.title}</span>}
+                description={<span className="text-xs md:text-sm leading-snug text-neutral-200">{skill.description}</span>}
                 header={
-                  <div className="flex items-center gap-3 p-4 glow-primary">
+                  <div className="flex items-center gap-2 p-2">
                     {getSkillIcon(skill.icon)}
                   </div>
                 }
-                className={`${idx === 3 || idx === 4 ? "md:col-span-2" : ""} animate-slide-up stagger-${(idx % 5) + 1}`}
+                className={`animate-slide-up stagger-${(idx % 5) + 1} p-4 md:p-5 backdrop-blur-xl bg-slate-900/50`}
                 icon={
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap gap-1.5 mt-3">
                     {skill.skills.map((s, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-full text-xs text-blue-300 hover:from-blue-500/30 hover:to-cyan-500/30 hover:scale-105 transition-all cursor-default shimmer"
+                        className="px-2 py-0.5 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 rounded-full text-[10px] md:text-xs text-blue-200 hover:scale-105 transition-transform cursor-default whitespace-nowrap"
                       >
                         {s}
                       </span>
@@ -361,68 +454,64 @@ export default function PortfolioUpgraded() {
         </div>
       </section>
 
-      {/* Experience Section - AMÉLIORÉ avec Timeline */}
+      {/* Experience Section */}
       <section id="experience" className="relative py-20 px-4">
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-16 animate-slide-up">
+          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
             Parcours
           </h2>
 
-          <Timeline data={timelineData} />
+          <div className="pt-2">
+            <Timeline data={timelineData} />
+          </div>
         </div>
       </section>
 
-      {/* Projects Section - AMÉLIORÉ avec 3D Cards */}
+      {/* Projects Section */}
       <section id="projects" className="relative py-20 px-4">
         <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-16 animate-slide-up">
+          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
             Projets
           </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, idx) => (
-              <CardContainer key={idx} className="inter-var m-4">
-                <CardBody className="glass-card animated-border group/card relative w-auto sm:w-[30rem] h-auto hover:glow-combined transition-all duration-300">
-                  <CardItem
-                    translateZ="50"
-                    className="text-xl font-bold mb-2"
-                  >
-                    <span className="gradient-text-primary">{project.title}</span>
-                  </CardItem>
-                  <CardItem
-                    as="p"
-                    translateZ="60"
-                    className="text-neutral-400 text-sm mb-4 line-clamp-3"
-                  >
-                    {project.description}
-                  </CardItem>
-                  <CardItem translateZ="100" className="w-full mb-4">
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.slice(0, 3).map((tag, i) => (
-                        <span
-                          key={i}
-                          className="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded-md text-xs text-blue-300 shimmer"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+              <CardContainer key={idx} containerClassName="w-full h-full">
+                <CardBody className="glass-card group/card relative w-full h-full hover:glow-combined transition-all duration-300 p-4 md:p-5 flex flex-col backdrop-blur-xl bg-slate-900/60">
+                  <div className="flex-grow space-y-2">
+                    <CardItem translateZ="50" className="text-lg md:text-xl font-bold">
+                      <span className="gradient-text-primary leading-tight">{project.title}</span>
+                    </CardItem>
+                    <CardItem as="p" translateZ="60" className="text-neutral-200 text-xs md:text-sm leading-snug">
+                      {project.description}
+                    </CardItem>
+                  </div>
+                  
+                  <div className="mt-auto pt-3 space-y-3">
+                    <CardItem translateZ="80" className="w-full">
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tags.slice(0, 3).map((tag, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 bg-blue-500/30 border border-blue-400/40 rounded-md text-[10px] md:text-xs text-blue-200 whitespace-nowrap"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </CardItem>
+                    <div className="flex justify-end items-center">
+                      <CardItem
+                        translateZ={40}
+                        as="a"
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 btn-glow transition-all"
+                        aria-label={`Voir ${project.title}`}
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </CardItem>
                     </div>
-                  </CardItem>
-                  <div className="flex justify-between items-center mt-4">
-                    <CardItem
-                      translateZ={20}
-                      as="button"
-                      className="px-4 py-2 rounded-xl text-xs font-normal text-white hover:bg-white/10 transition-colors"
-                    >
-                      Détails →
-                    </CardItem>
-                    <CardItem
-                      translateZ={20}
-                      as="button"
-                      className="px-4 py-2 rounded-xl bg-blue-500 text-white text-xs font-bold hover:bg-blue-600 btn-glow"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </CardItem>
                   </div>
                 </CardBody>
               </CardContainer>
@@ -431,44 +520,53 @@ export default function PortfolioUpgraded() {
         </div>
       </section>
 
-      {/* Contact Section - AMÉLIORÉ */}
+      {/* Contact Section avec PulseBeams */}
       <section id="contact" className="relative py-20 px-4">
+        {/* PulseBeams pour cette section */}
+        <div className="absolute inset-0 z-0 opacity-20">
+          <PulseBeams
+            beams={beams}
+            gradientColors={gradientColors}
+            className="bg-transparent"
+          />
+        </div>
+
         <div className="max-w-4xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-8 animate-slide-up">
+          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-6 animate-slide-up drop-shadow-2xl">
             Contact
           </h2>
-          <p className="text-xl text-neutral-400 text-center mb-12 animate-slide-up stagger-1">
-            N'hésitez pas à me contacter pour discuter de projets, d'opportunités ou simplement pour échanger !
+          <p className="text-base md:text-lg text-neutral-200 text-center mb-10 animate-slide-up stagger-1 drop-shadow-lg">
+            Discutons de projets et d'opportunités !
           </p>
 
-          {/* Contact Cards avec glow effects */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {/* Contact Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
             <a
               href={`mailto:${personalInfo.email}`}
-              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in"
+              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in p-3.5 backdrop-blur-xl bg-slate-900/60"
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-500/20 rounded-lg pulse-glow">
-                  <Mail className="h-6 w-6 text-blue-400" />
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
+                  <Mail className="h-5 w-5 text-blue-300" />
                 </div>
-                <div>
-                  <p className="text-sm text-neutral-400">Email</p>
-                  <p className="text-white font-semibold">{personalInfo.email}</p>
+                <div className="min-w-0">
+                  <p className="text-xs text-neutral-300 mb-0.5">Email</p>
+                  <p className="text-white font-semibold text-sm truncate">{personalInfo.email}</p>
                 </div>
               </div>
             </a>
 
             <a
               href={`tel:${personalInfo.phone.replace(/\s/g, "")}`}
-              className="glass-card animated-border shimmer hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-1"
+              className="glass-card animated-border shimmer hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-1 p-3.5 backdrop-blur-xl bg-slate-900/60"
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-cyan-500/20 rounded-lg pulse-glow">
-                  <Phone className="h-6 w-6 text-cyan-400" />
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
+                  <Phone className="h-5 w-5 text-cyan-300" />
                 </div>
-                <div>
-                  <p className="text-sm text-neutral-400">Téléphone</p>
-                  <p className="text-white font-semibold">{personalInfo.phone}</p>
+                <div className="min-w-0">
+                  <p className="text-xs text-neutral-300 mb-0.5">Téléphone</p>
+                  <p className="text-white font-semibold text-sm">{personalInfo.phone}</p>
                 </div>
               </div>
             </a>
@@ -477,44 +575,126 @@ export default function PortfolioUpgraded() {
               href={personalInfo.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in stagger-2"
+              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in stagger-2 p-3.5 backdrop-blur-xl bg-slate-900/60"
             >
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-500/20 rounded-lg pulse-glow">
-                  <Linkedin className="h-6 w-6 text-blue-400" />
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
+                  <Linkedin className="h-5 w-5 text-blue-300" />
                 </div>
-                <div>
-                  <p className="text-sm text-neutral-400">LinkedIn</p>
-                  <p className="text-white font-semibold">zakaria-rahou</p>
+                <div className="min-w-0">
+                  <p className="text-xs text-neutral-300 mb-0.5">LinkedIn</p>
+                  <p className="text-white font-semibold text-sm">zakaria-rahou</p>
                 </div>
               </div>
             </a>
 
-            <div className="glass-card hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-3">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-cyan-500/20 rounded-lg pulse-glow">
-                  <MapPin className="h-6 w-6 text-cyan-400" />
+            <div className="glass-card hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-3 p-3.5 backdrop-blur-xl bg-slate-900/60">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-cyan-300" />
                 </div>
-                <div>
-                  <p className="text-sm text-neutral-400">Localisation</p>
-                  <p className="text-white font-semibold">{personalInfo.location}</p>
+                <div className="min-w-0">
+                  <p className="text-xs text-neutral-300 mb-0.5">Localisation</p>
+                  <p className="text-white font-semibold text-sm truncate">{personalInfo.location}</p>
                 </div>
               </div>
             </div>
           </div>
+          
+          {/* Formulaire */}
+          <div className="glass-card animated-border p-5 md:p-6 animate-slide-up stagger-3 mb-10 backdrop-blur-xl bg-slate-900/60">
+            <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5 text-center">Envoyez un message</h3>
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div>
+                  <label htmlFor="name" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Nom</label>
+                  <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange} 
+                    required 
+                    className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Email</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    required 
+                    className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Sujet</label>
+                <input 
+                  type="text" 
+                  id="subject" 
+                  name="subject" 
+                  value={formData.subject} 
+                  onChange={handleChange} 
+                  className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
+                />
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Message</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  value={formData.message} 
+                  onChange={handleChange} 
+                  rows={4} 
+                  required 
+                  className="w-full p-2.5 rounded-lg form-input text-sm text-white resize-none bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
+                />
+              </div>
+              <div>
+                <MovingBorderButton
+                  type="submit"
+                  disabled={status === 'sending'}
+                  className="w-full btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
+                  borderRadius="1.75rem"
+                >
+                  <div className="flex items-center justify-center gap-2 text-sm md:text-base">
+                    {status === 'sending' ? (
+                      'Envoi en cours...'
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" />
+                        Envoyer
+                      </>
+                    )}
+                  </div>
+                </MovingBorderButton>
+              </div>
+              {status === 'success' && <p className="text-green-400 text-center text-sm">✅ Message envoyé avec succès sur votre Yahoo !</p>}
+              {status === 'error' && <p className="text-red-400 text-center text-sm">❌ Erreur lors de l'envoi. Veuillez réessayer.</p>}
+            </form>
+          </div>
 
-          {/* Interests avec glass-card */}
-          <div className="glass-card animated-border animate-slide-up stagger-4">
-            <h3 className="gradient-text-secondary text-2xl font-bold mb-6">Centres d'Intérêt</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Interests */}
+          <div className="glass-card animated-border animate-slide-up stagger-4 p-5 md:p-6 backdrop-blur-xl bg-slate-900/60">
+            <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5">
+              Centres d'Intérêt
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {interests.map((interest, idx) => (
                 <div
                   key={idx}
-                  className="p-4 backdrop-medium rounded-xl hover:backdrop-heavy hover:glow-primary transition-all hover:scale-105"
+                  className="p-3 backdrop-blur-md bg-slate-800/40 rounded-xl hover:bg-slate-800/60 hover:glow-primary transition-all hover:scale-105"
                 >
-                  <p className="text-2xl mb-2">{interest.emoji}</p>
-                  <p className="font-semibold text-white mb-1">{interest.title}</p>
-                  <p className="text-sm text-neutral-400">{interest.description}</p>
+                  <p className="text-xl mb-1.5">{interest.emoji}</p>
+                  <p className="font-semibold text-white text-sm mb-1">{interest.title}</p>
+                  <p className="text-xs text-neutral-200 leading-snug">
+                    {interest.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -522,19 +702,18 @@ export default function PortfolioUpgraded() {
         </div>
       </section>
 
-      {/* Footer - AMÉLIORÉ */}
-      <footer className="relative py-8 px-4 border-t border-white/10 backdrop-blur-xl">
+      {/* Footer */}
+      <footer className="relative py-6 px-4 border-t border-white/10 backdrop-blur-xl bg-slate-900/40">
         <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <p className="text-neutral-400 gradient-text-primary">
+          <p className="text-neutral-300 gradient-text-primary text-sm">
             © 2025 {personalInfo.name}. Tous droits réservés.
           </p>
-          <p className="text-sm text-neutral-500 mt-2">
+          <p className="text-xs text-neutral-400 mt-2">
             Fait avec ❤️ en utilisant <span className="gradient-text">Next.js</span> et <span className="gradient-text">Aceternity UI</span>
           </p>
         </div>
       </footer>
 
-      {/* Animation CSS pour Spotlight */}
       <style jsx global>{`
         @keyframes spotlight {
           0% {
@@ -548,6 +727,12 @@ export default function PortfolioUpgraded() {
         }
         .animate-spotlight {
           animation: spotlight 2s ease 0.75s 1 forwards;
+        }
+
+        .form-input:focus {
+          outline: none;
+          border-color: #60a5fa;
+          box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
         }
       `}</style>
     </div>

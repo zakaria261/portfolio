@@ -1,83 +1,73 @@
-"use client";
-import React, { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "framer-motion";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { JSX } from "react/jsx-runtime";
+import React, { useState, useEffect } from 'react';
 
-export const FloatingNav = ({
-  navItems,
-  className,
-}: {
-  navItems: {
-    name: string;
-    link: string;
-    icon?: JSX.Element;
-  }[];
+interface NavItem {
+  name: string;
+  link: string; // The ID of the section to scroll to, e.g., '#home'
+  icon?: React.ReactNode;
+}
+
+interface FloatingNavProps {
+  navItems: NavItem[];
+  onNavItemClick: (id: string) => void;
   className?: string;
-}) => {
-  const { scrollYProgress } = useScroll();
+}
 
-  const [visible, setVisible] = useState(true);
+export const FloatingNav: React.FC<FloatingNavProps> = ({ navItems, onNavItemClick, className }) => {
+  const [visible, setVisible] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    // Check if current is not undefined and is a number
-    if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
-
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(true);
-      } else {
-        if (direction < 0) {
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      // Show nav if scrolling up and past the hero section, hide if scrolling down
+      if (currentScrollY > 200) {
+        if (currentScrollY < lastScrollY) {
           setVisible(true);
         } else {
           setVisible(false);
         }
+      } else {
+        setVisible(false);
       }
-    }
-  });
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlNavbar, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    e.preventDefault();
+    onNavItemClick(link.substring(1)); // Remove '#'
+  };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{
-          opacity: 1,
-          y: -100,
-        }}
-        animate={{
-          y: visible ? 0 : -100,
-          opacity: visible ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.2,
-        }}
-        className={cn(
-          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border border-white/[0.2] rounded-full bg-black/80 backdrop-blur-lg shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000] pr-2 pl-8 py-2 items-center justify-center space-x-4",
-          className
-        )}
-      >
-        {navItems.map((navItem: any, idx: number) => (
-          <Link
-            key={`link=${idx}`}
+    <div
+      className={`
+        fixed top-6 inset-x-0 max-w-fit mx-auto z-50
+        transition-transform duration-300 ease-in-out
+        ${visible ? 'translate-y-0' : '-translate-y-24'}
+        ${className}
+      `}
+      aria-hidden={!visible}
+    >
+      <nav className="flex items-center gap-1 p-2 rounded-full glass-card border-white/10 glow-primary shadow-lg">
+        {navItems.map((navItem, idx) => (
+          <a
+            key={`link-${idx}`}
             href={navItem.link}
-            className={cn(
-              "relative text-neutral-50 items-center flex space-x-1 hover:text-blue-400 transition-colors"
-            )}
+            onClick={(e) => handleClick(e, navItem.link)}
+            className="flex items-center space-x-2 text-neutral-300 hover:text-blue-300 transition-colors px-4 py-2 rounded-full cursor-pointer hover:bg-white/5"
+            title={navItem.name}
           >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="hidden sm:block text-sm">{navItem.name}</span>
-          </Link>
+            {navItem.icon}
+            <span className="hidden sm:inline-block text-sm font-medium">{navItem.name}</span>
+          </a>
         ))}
-        <button className="border text-sm font-medium relative border-white/[0.2] text-white px-4 py-2 rounded-full">
-          <span>Contact</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button>
-      </motion.div>
-    </AnimatePresence>
+      </nav>
+    </div>
   );
 };

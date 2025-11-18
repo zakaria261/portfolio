@@ -1,52 +1,71 @@
 export const personalInfo = {
   name: "Zakaria RAHOU",
-  title: "Data Engineering Student",
-  description: "Étudiant ingénieur en informatique et sciences des données, diplômé en septembre 2027. Passionné par l'analyse de données, l'intelligence artificielle et le développement logiciel.",
+  title: "Computer Science & Data Engineering Student",
+  description:
+    "Étudiant ingénieur en informatique et sciences des données spécialisé en visualisation scientifique, intelligence artificielle et développement logiciel. Approche rigoureuse, méthodologie scientifique et capacités avancées en analyse de données.",
   email: "zakaria_rahou@yahoo.fr",
-  phone: "+61 7 67 96 54 30",
+  phone: "+33 7 67 96 54 30",
   location: "Annecy, France",
   linkedin: "https://linkedin.com/in/zakaria-rahou",
   github: "#",
 };
 
+// -------------------------------------------------------------
+
 export const skills = [
   {
     title: "Langages de Programmation",
-    skills: ["C++", "Java", "Python", "HTML", "CSS", "JavaScript", "TypeScript"],
+    skills: ["Python", "Java", "C++", "JavaScript", "TypeScript", "HTML", "CSS"],
     icon: "code",
-    description: "Maîtrise des langages orientés objet et scripts modernes"
+    description: "Langages orientés objet, scripts scientifiques et développement moderne",
   },
   {
     title: "Frameworks & Bibliothèques",
-    skills: ["ASP.NET", "Angular", "React", "Next.js", "Spring Boot", "Node.js"],
+    skills: ["React", "Next.js", "Angular", "Vite", "Node.js", "Spring Boot", "ASP.NET"],
     icon: "globe",
-    description: "Développement full-stack avec frameworks modernes"
+    description: "Développement full-stack et interfaces orientées composants",
   },
   {
-    title: "Data & Bases de Données",
-    skills: ["SQL Server", "PostgreSQL", "MongoDB", "Pandas", "NumPy", "Scikit-learn"],
+    title: "Data, IA & Visualisation",
+    skills: [
+      "Tableau",
+      "Power BI",
+      "Pandas",
+      "NumPy",
+      "Scikit-learn",
+      "TensorFlow",
+      "PyTorch",
+    ],
     icon: "database",
-    description: "Gestion et analyse de données à grande échelle"
+    description: "Traitement, analyse et représentation scientifique des données",
+  },
+  {
+    title: "Bases de Données",
+    skills: ["PostgreSQL", "SQL Server", "MongoDB", "SQLite"],
+    icon: "storage",
+    description: "Modélisation, optimisation de requêtes et gestion de données",
   },
   {
     title: "Outils & DevOps",
-    skills: ["Git", "Docker", "CI/CD", "Linux", "Azure", "AWS"],
+    skills: ["Git", "Docker", "CI/CD", "Linux"],
     icon: "tool",
-    description: "Infrastructure moderne et bonnes pratiques DevOps"
+    description: "Conteneurisation, automatisation et environnement de développement moderne",
   },
   {
     title: "Intelligence Artificielle",
-    skills: ["Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "NLP"],
+    skills: ["Machine Learning", "Deep Learning", "NLP"],
     icon: "brain",
-    description: "Algorithmes d'IA et apprentissage automatique"
+    description: "Conception et entraînement de modèles d’IA",
   },
   {
     title: "Compétences Interpersonnelles",
-    skills: ["Travail d'équipe", "Communication", "Gestion du temps", "Adaptabilité", "Leadership"],
+    skills: ["Travail d'équipe", "Communication", "Adaptabilité", "Gestion du temps"],
     icon: "heart",
-    description: "Soft skills essentiels pour collaboration efficace"
-  }
+    description: "Collaboration efficace et résolution de problèmes complexes",
+  },
 ];
+
+// -------------------------------------------------------------
 
 export const experiences = [
   {
@@ -55,15 +74,15 @@ export const experiences = [
     company: "Polytech Annecy",
     location: "Annecy, France",
     type: "Formation",
-    description: "Formation d'ingénieur spécialisée en science des données et intelligence artificielle",
+    description:
+      "Formation axée sur l'analyse scientifique, la modélisation, la data engineering et l'intelligence artificielle.",
     points: [
-      "Cours avancés en apprentissage automatique, traitement du langage naturel et big data",
-      "Développement de projets en équipe utilisant des méthodologies agiles",
-      "Spécialisation en data engineering et architectures cloud",
-      "Cours supplémentaires en gestion de projet, transformation numérique et éthique informatique",
-      "Expérience pratique en traitement de données, apprentissage automatique et ingénierie logicielle"
+      "Analyse de données, apprentissage automatique et traitement du signal",
+      "Data visualisation avancée avec Tableau et Power BI",
+      "Développement logiciel scientifique et architectures distribuées",
+      "Méthodologie scientifique, reproductibilité et bonnes pratiques",
     ],
-    skills: ["Python", "Machine Learning", "Big Data", "Cloud Computing", "Data Engineering"]
+    skills: ["Python", "Machine Learning", "Tableau", "Data Engineering"],
   },
   {
     year: "2021 - 2023",
@@ -71,107 +90,135 @@ export const experiences = [
     company: "Université Grenoble Alpes",
     location: "Grenoble, France",
     type: "Formation",
-    description: "Programme intensif en Mathématiques & Physique",
+    description: "Programme intensif en mathématiques, physique et algorithmique.",
     points: [
-      "Cours intensifs en mathématiques avancées, physique et sciences de l'ingénieur",
-      "Accent sur la résolution de problèmes, la pensée analytique et le raisonnement scientifique",
-      "Développement de compétences en calcul et modélisation par une formation et des projets rigoureux",
+      "Méthodologie scientifique rigoureuse et modélisation",
+      "Résolution avancée de problèmes complexes",
+      "Renforcement en algorithmique et logique mathématique",
     ],
-    skills: ["Mathématiques", "Physique", "Algorithmique", "Résolution de problèmes"]
-  }
+    skills: ["Mathématiques", "Physique", "Algorithmique"],
+  },
 ];
+
+// -------------------------------------------------------------
 
 export const projects = [
   {
+    title: "Plateforme de Visualisation Scientifique – Compétences Polytech S5–S10",
+    description:
+      "Conception d’un tableau de bord scientifique permettant d’analyser la progression des compétences des étudiants. Préparation des données, modélisation, extraction de KPI et visualisation interactive.",
+    tags: ["Tableau", "Power BI", "Python", "Pandas", "Data Viz"],
+    image: "/projects/dataviz.jpg",
+    link: "#",
+    category: "Data Science",
+    featured: true,
+  },
+  {
+    title: "Assistant IA pour la Gestion Budgétaire",
+    description:
+      "Outil intelligent analysant automatiquement les transactions financières, avec recommandations IA, extraction de patterns et dashboards analytiques. Déploiement conteneurisé avec Docker.",
+    tags: ["Python", "NLP", "Machine Learning", "Data Analysis", "Docker"],
+    image: "/projects/budget-ai.jpg",
+    link: "#",
+    category: "IA",
+    featured: true,
+  },
+  {
+    title: "Assistant Vocal pour Restaurants",
+    description:
+      "Système de prise de commande par la voix utilisant traitement du signal et NLP. Interface front-end en Vite et architecture modulaire.",
+    tags: ["NLP", "Speech Processing", "Node.js", "Vite"],
+    image: "/projects/voice-assistant.jpg",
+    link: "#",
+    category: "Full Stack / IA",
+    featured: true,
+  },
+  {
+    title: "Portfolio Numérique – CV Scientifique",
+    description:
+      "Développement d’un portfolio interactif moderne en Next.js avec présentation scientifique des projets, animations légères et design épuré.",
+    tags: ["Next.js", "React", "Tailwind", "Vite"],
+    image: "/projects/portfolio.jpg",
+    link: "#",
+    category: "Full Stack",
+    featured: true,
+  },
+  {
     title: "Système de Gestion de Bibliothèque",
-    description: "Analyse des besoins municipaux pour la gestion de bibliothèque, incluant le suivi des prêts de livres, CD et DVD. Conception et implémentation des fonctionnalités clés pour rationaliser les opérations.",
-    tags: ["Java", "SQL", "Spring Boot", "REST API", "PostgreSQL"],
+    description:
+      "Analyse scientifique du besoin, modélisation UML et développement d’un système de gestion documentaire pour bibliothèque municipale.",
+    tags: ["Java", "Spring Boot", "PostgreSQL"],
     image: "/projects/library.jpg",
     link: "#",
     category: "Full Stack",
-    featured: true
+    featured: false,
   },
   {
-    title: "Plateforme d'Analyse de Données",
-    description: "Extraction et analyse d'une base de données d'entreprise avec visualisations interactives. Développement de dashboards pour insights business en temps réel.",
-    tags: ["Python", "Pandas", "Plotly", "Excel", "Data Analysis"],
-    image: "/projects/data-analysis.jpg",
+    title: "Modèle de Prédiction Machine Learning",
+    description:
+      "Préprocessing, feature engineering et développement d’un modèle de prédiction sur séries temporelles. Analyse scientifique et expérimentation.",
+    tags: ["Python", "TensorFlow", "Scikit-learn"],
+    image: "/projects/ml.jpg",
     link: "#",
-    category: "Data Science",
-    featured: true
-  },
-  {
-    title: "Application Web de Projets Académiques",
-    description: "Création d'un site web pour présenter des projets académiques (APP). Gestion des informations du site, incluant les listes de participants, sessions, documents, galerie photos et fonctionnalités interactives. Optimisation des requêtes SQL pour améliorer les performances.",
-    tags: ["React", "Node.js", "PostgreSQL", "Express", "Tailwind CSS"],
-    image: "/projects/academic-projects.jpg",
-    link: "#",
-    category: "Full Stack",
-    featured: true
-  },
-  {
-    title: "Système de Don Humanitaire",
-    description: "Assistance à une organisation caritative en développant un système de dons pour la construction de puits. Interface intuitive avec suivi en temps réel des dons.",
-    tags: ["React", "Firebase", "Stripe", "Humanitarian"],
-    image: "/projects/humanitarian.jpg",
-    link: "#",
-    category: "Impact Social",
-    featured: false
-  },
-  {
-    title: "Modèle de Prédiction ML",
-    description: "Développement d'un modèle de machine learning pour prédiction de séries temporelles. Preprocessing, feature engineering et déploiement du modèle.",
-    tags: ["Python", "Scikit-learn", "TensorFlow", "ML", "API"],
-    image: "/projects/ml-model.jpg",
-    link: "#",
-    category: "Data Science",
-    featured: false
+    category: "IA",
+    featured: false,
   },
   {
     title: "Mini-Projets Multi-Langages",
-    description: "Collection de projets à petite échelle développés individuellement et en collaboration utilisant plusieurs langages de programmation (Python, Java, C, C++).",
-    tags: ["Python", "Java", "C++", "Algorithmes", "Teamwork"],
+    description:
+      "Collection de projets individuels et en équipe utilisant divers langages : optimisation, algorithmes et structures de données.",
+    tags: ["Python", "Java", "C++", "Algorithmique"],
     image: "/projects/mini-projects.jpg",
     link: "#",
     category: "Divers",
-    featured: false
-  }
+    featured: false,
+  },
 ];
+
+// -------------------------------------------------------------
 
 export const interests = [
   {
     emoji: "🤝",
     title: "Travail en Équipe & Bénévolat",
-    description: "Assistance aux organisations footballistique via le développement de jeune joueurs et la gestion d'équipé"
+    description:
+      "Contribution à des projets associatifs et accompagnement d’équipes sportives et humanitaires.",
   },
   {
     emoji: "✈️",
     title: "Voyages",
-    description: "Voyages en sac à dos en solo autour du monde, découverte de nouvelles cultures (Australie, Asie, Europe)"
+    description:
+      "Voyages en sac à dos dans le monde : Australie, Asie, Europe. Découverte scientifique et culturelle.",
   },
   {
     emoji: "🏔️",
     title: "Randonnée",
-    description: "Randonnées mensuelles dans les Alpes françaises, alpinisme et photographie de paysages"
+    description:
+      "Randonnées mensuelles dans les Alpes, passion pour la nature et la photographie de paysages.",
   },
   {
     emoji: "📚",
-    title: "Lecture & Veille Techno",
-    description: "Passionné par les nouvelles technologies, l'IA et le développement durable"
-  }
+    title: "Lecture & Veille Technologique",
+    description:
+      "IA, innovation scientifique, développement durable, avancées technologiques.",
+  },
 ];
+
+// -------------------------------------------------------------
 
 export const testimonials = [
   {
-    quote: "Zakaria est un développeur talentueux avec une grande capacité d'apprentissage. Son travail sur notre projet a dépassé nos attentes.",
+    quote:
+      "Zakaria est un développeur talentueux avec une grande capacité d'apprentissage. Son approche scientifique apporte une réelle rigueur aux projets.",
     name: "Jean Dupont",
     title: "CTO, Tech Company",
-    image: "/testimonials/person1.jpg"
+    image: "/testimonials/person1.jpg",
   },
   {
-    quote: "Excellent travail d'équipe et compétences techniques solides. Zakaria a apporté une réelle valeur ajoutée à notre équipe.",
+    quote:
+      "Excellente méthodologie, rigueur et compétences techniques solides. Zakaria a eu un vrai impact dans notre équipe.",
     name: "Marie Martin",
     title: "Project Manager",
-    image: "/testimonials/person2.jpg"
-  }
+    image: "/testimonials/person2.jpg",
+  },
 ];
