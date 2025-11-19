@@ -277,10 +277,8 @@ export default function PortfolioUpgraded() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      {/* Floating Navigation */}
-      <FloatingNav navItems={navItems} onNavItemClick={function (id: string): void {
-        throw new Error("Function not implemented.");
-      }} />
+      {/* Floating Navigation - CORRIGÉ */}
+      <FloatingNav navItems={navItems} onNavItemClick={(id: string) => scrollToSection(id)} />
 
       {/* Hero Section avec PulseBeams */}
       <section
@@ -359,10 +357,13 @@ export default function PortfolioUpgraded() {
               LinkedIn
             </MovingBorderButton>
 
+            {/* Bouton CV - CORRIGÉ avec lien de téléchargement */}
             <MovingBorderButton
               borderRadius="1.75rem"
               className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
-              as="button"
+              as="a"
+              href="/Rahou_Zakaria_CV.pdf"
+              download="CV_Zakaria_Rahou.pdf"
             >
               <Download className="mr-2 h-5 w-5" />
               CV
