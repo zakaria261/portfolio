@@ -71,7 +71,7 @@ export const skills = [
 export const experiences = [
   {
     year: "2023 - 2027",
-    title: "Master of Science - Informatique & Ingénierie des Données",
+    title: "Ecole d'ingénieur - Informatique & Ingénierie des Données",
     company: "Polytech Annecy",
     location: "Annecy, France",
     type: "Formation",
@@ -203,7 +203,7 @@ export const interests = [
     emoji: "✈️",
     title: "Expérience Internationale",
     description:
-      "1 an en Australie + voyages extensifs. Forte adaptabilité cross-culturelle et ouverture d'esprit internationale.",
+      "1 an en Australie + voyages extensifs. Forte adaptabilité culturelle et ouverture d'esprit internationale.",
   },
   {
     emoji: "🤝",

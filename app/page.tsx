@@ -388,9 +388,9 @@ export default function PortfolioUpgraded() {
 
           <div className="glass-card animated-border shimmer animate-scale-in p-5 md:p-6 backdrop-blur-xl bg-slate-900/60">
             <p className="text-sm md:text-base text-neutral-200 leading-relaxed mb-3">
-              Je suis étudiant en <span className="gradient-text-primary font-semibold">Master of Science</span> en 
+              Je suis étudiant en <span className="gradient-text-primary font-semibold"> École d'ingénieur</span> en 
               Informatique et Ingénierie des Données à <span className="gradient-text-secondary font-semibold">Polytech Annecy</span>, 
-              avec une graduation prévue en 2027.
+              avec un diplôme d'ingénieur prévue en 2027.
             </p>
 
             <p className="text-sm md:text-base text-neutral-200 leading-relaxed mb-4">
