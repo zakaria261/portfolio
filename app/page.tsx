@@ -315,7 +315,7 @@ export default function PortfolioUpgraded() {
                 alt={personalInfo.name}
                 width={160}
                 height={160}
-                className="object-cover"
+                className="object-cover object-[center_15%] scale-125"
                 priority
               />
             </div>
