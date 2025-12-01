@@ -29,7 +29,7 @@ import { MovingBorderButton } from "@/components/ui/moving-border";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
 
-const AnoAI = dynamic(() => import('@/components/ui/animated-shader-background'), {
+const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
   loading: () => <div className="fixed inset-0 bg-black" />
 });
@@ -269,10 +269,10 @@ export default function PortfolioUpgraded() {
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-hidden">
-      {/* Background Animé - AnoAI */}
+      {/* Animated Background (Gradients + Particles) */}
       <div className="fixed inset-0 z-0">
-        <AnoAI />
-        {/* Overlay pour améliorer la lisibilité */}
+        <AnimatedBackground />
+        {/* Overlay to improve readability */}
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
