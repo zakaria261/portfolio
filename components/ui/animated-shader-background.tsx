@@ -9,10 +9,21 @@ const AnoAI = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Disable on mobile devices for better performance
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      return;
+    }
+
     const container = containerRef.current;
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+    // Reduce antialiasing for better performance
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      powerPreference: 'high-performance'
+    });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
@@ -70,10 +81,10 @@ const AnoAI = () => {
           vec4 o = vec4(0.0);
           float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
           
-          for (float i = 0.0; i < 35.0; i++) {
+          for (float i = 0.0; i < 20.0; i++) {
             v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
             
-            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 20.0));
             
             vec4 auroraColors = vec4(
               0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
@@ -83,7 +94,7 @@ const AnoAI = () => {
             );
             
             vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
-            float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
+            float thinnessFactor = smoothstep(0.0, 1.0, i / 20.0) * 0.6;
             
             o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
           }
@@ -98,13 +109,23 @@ const AnoAI = () => {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
+    // Limit framerate to 30fps instead of 60fps for better performance
     let frameId: number;
-    const animate = () => {
+    let lastTime = 0;
+    const targetFPS = 30;
+    const frameDelay = 1000 / targetFPS;
+
+    const animate = (currentTime: number) => {
+      frameId = requestAnimationFrame(animate);
+
+      const elapsed = currentTime - lastTime;
+      if (elapsed < frameDelay) return;
+
+      lastTime = currentTime - (elapsed % frameDelay);
       material.uniforms.iTime.value += 0.016;
       renderer.render(scene, camera);
-      frameId = requestAnimationFrame(animate);
     };
-    animate();
+    animate(0);
 
     const handleResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);

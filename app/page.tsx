@@ -28,7 +28,6 @@ import { Timeline } from "@/components/ui/timeline";
 import { MovingBorderButton } from "@/components/ui/moving-border";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
-import { SplineScene } from "@/components/ui/splite";
 
 const AnoAI = dynamic(() => import('@/components/ui/animated-shader-background'), {
   ssr: false,
@@ -291,14 +290,6 @@ export default function PortfolioUpgraded() {
             beams={beams}
             gradientColors={gradientColors}
             className="bg-transparent"
-          />
-        </div>
-
-        {/* Spline 3D (optionnel - peut être retiré si trop chargé) */}
-        <div className="absolute inset-0 z-[2] opacity-20">
-          <SplineScene 
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
           />
         </div>
 
