@@ -1,35 +1,19 @@
 "use client";
 
 import dynamic from 'next/dynamic';
-import React, { useState } from "react";
-import Image from "next/image";
-import {
-  Mail,
-  Phone,
-  Linkedin,
-  MapPin,
-  Code,
-  Database,
-  Globe,
-  Heart,
-  Brain,
-  Wrench,
-  ExternalLink,
-  Send,
-} from "lucide-react";
+import React from "react";
+import { Code } from "lucide-react";
 import { FloatingNav } from "@/components/ui/floating-navbar";
-import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
-import { MovingBorderButton } from "@/components/ui/moving-border";
-import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
-import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS, NAV_ITEMS } from "@/constants/portfolio";
-import type { ContactFormData, FormStatus } from "@/types/portfolio";
+import { NAV_ITEMS } from "@/constants/portfolio";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { useContactForm } from "@/hooks/useContactForm";
+import { useScrollToSection } from "@/hooks/useScrollToSection";
 
 const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
@@ -37,51 +21,8 @@ const AnimatedBackground = dynamic(() => import('@/components/ui/animated-backgr
 });
 
 export default function PortfolioUpgraded() {
-  const [activeSection, setActiveSection] = useState<string>("home");
-  const [formData, setFormData] = useState<ContactFormData>({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<FormStatus>('idle');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setTimeout(() => setStatus('idle'), 5000);
-      } else {
-        console.error('Erreur:', data.error);
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 5000);
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'envoi:', error);
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
-    }
-  };
-
-
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
-  };
+  const { formData, status, handleChange, handleSubmit } = useContactForm();
+  const { scrollToSection } = useScrollToSection();
 
   const navItems = NAV_ITEMS.map(item => ({
     ...item,
