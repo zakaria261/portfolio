@@ -12,6 +12,7 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/common/Footer";
 import { useContactForm } from "@/hooks/useContactForm";
 import { useScrollToSection } from "@/hooks/useScrollToSection";
 
@@ -71,17 +72,7 @@ export default function PortfolioUpgraded() {
         onFormSubmit={handleSubmit}
       />
 
-      {/* Footer */}
-      <footer className="relative py-6 px-4 border-t border-white/10 backdrop-blur-xl bg-slate-900/40">
-        <div className="max-w-4xl mx-auto relative z-10 text-center">
-          <p className="text-neutral-300 gradient-text-primary text-sm">
-            © 2025 {personalInfo.name}. Tous droits réservés.
-          </p>
-          <p className="text-xs text-neutral-400 mt-2">
-            Fait avec ❤️ en utilisant <span className="gradient-text">Next.js</span> et <span className="gradient-text">Aceternity UI</span>
-          </p>
-        </div>
-      </footer>
+      <Footer name={personalInfo.name} />
     </div>
   );
 }
