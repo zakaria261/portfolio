@@ -15,21 +15,18 @@ import {
   Brain,
   Wrench,
   ExternalLink,
-  Download,
-  ChevronDown,
   Send,
 } from "lucide-react";
 import { FloatingNav } from "@/components/ui/floating-navbar";
-import { TypewriterEffect } from "@/components/ui/typewriter-effect";
-import { Spotlight } from "@/components/ui/spotlight";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Timeline } from "@/components/ui/timeline";
 import { MovingBorderButton } from "@/components/ui/moving-border";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
-import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS, NAV_ITEMS, TYPEWRITER_WORDS } from "@/constants/portfolio";
+import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS, NAV_ITEMS } from "@/constants/portfolio";
 import type { ContactFormData, FormStatus } from "@/types/portfolio";
+import { HeroSection } from "@/components/sections/HeroSection";
 
 const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
@@ -142,95 +139,11 @@ export default function PortfolioUpgraded() {
       {/* Floating Navigation - CORRIGÉ */}
       <FloatingNav navItems={navItems} onNavItemClick={(id: string) => scrollToSection(id)} />
 
-      {/* Hero Section avec PulseBeams */}
-      <section
-        id="home"
-        className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden"
-      >
-        {/* PulseBeams Effect */}
-        <div className="absolute inset-0 z-[1] opacity-30">
-          <PulseBeams
-            beams={PULSE_BEAMS_CONFIG}
-            gradientColors={GRADIENT_COLORS}
-            className="bg-transparent"
-          />
-        </div>
-
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20 z-[5]"
-          fill="white"
-        />
-        
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="mb-8 flex justify-center animate-fade-in">
-            <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-blue-400/70 glow-combined animate-float shadow-2xl shadow-blue-500/50">
-              <Image
-                src="/profile.jpg"
-                alt={personalInfo.name}
-                width={160}
-                height={160}
-                className="object-cover object-[70%_15%] scale-125"
-              />
-            </div>
-          </div>
-
-          <div className="animate-slide-up">
-            <h1 className="gradient-text text-5xl md:text-7xl font-bold mb-6 text-shadow-glow">
-              {personalInfo.name}
-            </h1>
-          </div>
-
-          <div className="animate-slide-up stagger-1">
-            <TypewriterEffect words={TYPEWRITER_WORDS} className="mb-6" />
-          </div>
-
-          <p className="text-lg md:text-xl text-neutral-200 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up stagger-2 drop-shadow-lg">
-            {personalInfo.description}
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-12 animate-slide-up stagger-3">
-            <MovingBorderButton
-              borderRadius="1.75rem"
-              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
-              as="a"
-              href={`mailto:${personalInfo.email}`}
-            >
-              <Mail className="mr-2 h-5 w-5" />
-              Contact
-            </MovingBorderButton>
-
-            <MovingBorderButton
-              borderRadius="1.75rem"
-              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
-              as="a"
-              href={personalInfo.linkedin}
-              target="_blank"
-            >
-              <Linkedin className="mr-2 h-5 w-5" />
-              LinkedIn
-            </MovingBorderButton>
-
-            {/* Bouton CV - CORRIGÉ avec lien de téléchargement */}
-            <MovingBorderButton
-              borderRadius="1.75rem"
-              className="btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
-              as="a"
-              href="/Rahou_Zakaria_CV.pdf"
-              download="CV_Zakaria_Rahou.pdf"
-            >
-              <Download className="mr-2 h-5 w-5" />
-              CV
-            </MovingBorderButton>
-          </div>
-
-          <button
-            onClick={() => scrollToSection("about")}
-            className="animate-bounce text-blue-400 hover:text-blue-300 transition-colors pulse-glow"
-          >
-            <ChevronDown size={40} />
-          </button>
-        </div>
-      </section>
+      {/* Hero Section */}
+      <HeroSection
+        personalInfo={personalInfo}
+        onScrollToSection={scrollToSection}
+      />
 
       {/* About Section */}
       <section id="about" className="relative py-20 px-4">
