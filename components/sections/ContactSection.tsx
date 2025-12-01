@@ -117,7 +117,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   value={formData.name}
                   onChange={onFormChange}
                   required
-                  className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
+                  className="w-full p-2.5 rounded-lg text-sm text-white bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div>
@@ -129,7 +129,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   value={formData.email}
                   onChange={onFormChange}
                   required
-                  className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
+                  className="w-full p-2.5 rounded-lg text-sm text-white bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
                 />
               </div>
             </div>
@@ -141,7 +141,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 name="subject"
                 value={formData.subject}
                 onChange={onFormChange}
-                className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
+                className="w-full p-2.5 rounded-lg text-sm text-white bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <div>
@@ -153,7 +153,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 onChange={onFormChange}
                 rows={4}
                 required
-                className="w-full p-2.5 rounded-lg form-input text-sm text-white resize-none bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
+                className="w-full p-2.5 rounded-lg text-sm text-white resize-none bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
               />
             </div>
             <div>

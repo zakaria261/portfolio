@@ -82,28 +82,6 @@ export default function PortfolioUpgraded() {
           </p>
         </div>
       </footer>
-
-      <style jsx global>{`
-        @keyframes spotlight {
-          0% {
-            opacity: 0;
-            transform: translate(-72%, -62%) scale(0.5);
-          }
-          100% {
-            opacity: 1;
-            transform: translate(-50%, -40%) scale(1);
-          }
-        }
-        .animate-spotlight {
-          animation: spotlight 2s ease 0.75s 1 forwards;
-        }
-
-        .form-input:focus {
-          outline: none;
-          border-color: #60a5fa;
-          box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
-        }
-      `}</style>
     </div>
   );
 }
