@@ -4,6 +4,7 @@ import { MovingBorderButton } from '@/components/ui/moving-border';
 import { PulseBeams } from '@/components/ui/pulse-beams';
 import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS } from '@/constants/portfolio';
 import type { PersonalInfo, Interest, ContactFormData, FormStatus } from '@/types/portfolio';
+import { extractLinkedInUsername } from '@/utils/url';
 
 interface ContactSectionProps {
   personalInfo: PersonalInfo;
@@ -85,7 +86,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               </div>
               <div className="min-w-0">
                 <p className="text-xs text-neutral-300 mb-0.5">LinkedIn</p>
-                <p className="text-white font-semibold text-sm">zakaria-rahou</p>
+                <p className="text-white font-semibold text-sm">{extractLinkedInUsername(personalInfo.linkedin)}</p>
               </div>
             </div>
           </a>
