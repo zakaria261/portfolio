@@ -1,10 +1,17 @@
+/**
+ * Contact Section
+ * Displays contact information, form, and interests using card components
+ */
+
 import React from 'react';
-import { Mail, Phone, Linkedin, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, Linkedin as LinkedinIcon, MapPin, Send } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border';
 import { PulseBeams } from '@/components/ui/pulse-beams';
 import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS } from '@/constants/portfolio';
-import type { PersonalInfo, Interest, ContactFormData, FormStatus } from '@/types/portfolio';
+import { ContactInfoCard } from '@/components/cards/ContactInfoCard';
+import { InterestCard } from '@/components/cards/InterestCard';
 import { extractLinkedInUsername } from '@/utils/url';
+import type { PersonalInfo, Interest, ContactFormData, FormStatus } from '@/types/portfolio';
 
 interface ContactSectionProps {
   personalInfo: PersonalInfo;
@@ -44,73 +51,54 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
         {/* Contact Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          <a
+          <ContactInfoCard
+            icon={Mail}
+            iconColor="blue"
+            label="Email"
+            value={personalInfo.email}
             href={`mailto:${personalInfo.email}`}
-            className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in p-3.5 backdrop-blur-xl bg-slate-900/60"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
-                <Mail className="h-5 w-5 text-blue-300" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-neutral-300 mb-0.5">Email</p>
-                <p className="text-white font-semibold text-sm truncate">{personalInfo.email}</p>
-              </div>
-            </div>
-          </a>
+          />
 
-          <a
-            href={`tel:${personalInfo.phone.replace(/\s/g, "")}`}
-            className="glass-card animated-border shimmer hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-1 p-3.5 backdrop-blur-xl bg-slate-900/60"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
-                <Phone className="h-5 w-5 text-cyan-300" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-neutral-300 mb-0.5">Téléphone</p>
-                <p className="text-white font-semibold text-sm">{personalInfo.phone}</p>
-              </div>
-            </div>
-          </a>
+          <ContactInfoCard
+            icon={Phone}
+            iconColor="cyan"
+            label="Téléphone"
+            value={personalInfo.phone}
+            href={`tel:${personalInfo.phone.replace(/\s/g, '')}`}
+            staggerClass="stagger-1"
+          />
 
-          <a
+          <ContactInfoCard
+            icon={LinkedinIcon}
+            iconColor="blue"
+            label="LinkedIn"
+            value={extractLinkedInUsername(personalInfo.linkedin)}
             href={personalInfo.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in stagger-2 p-3.5 backdrop-blur-xl bg-slate-900/60"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
-                <Linkedin className="h-5 w-5 text-blue-300" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-neutral-300 mb-0.5">LinkedIn</p>
-                <p className="text-white font-semibold text-sm">{extractLinkedInUsername(personalInfo.linkedin)}</p>
-              </div>
-            </div>
-          </a>
+            staggerClass="stagger-2"
+          />
 
-          <div className="glass-card hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-3 p-3.5 backdrop-blur-xl bg-slate-900/60">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
-                <MapPin className="h-5 w-5 text-cyan-300" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-neutral-300 mb-0.5">Localisation</p>
-                <p className="text-white font-semibold text-sm truncate">{personalInfo.location}</p>
-              </div>
-            </div>
-          </div>
+          <ContactInfoCard
+            icon={MapPin}
+            iconColor="cyan"
+            label="Localisation"
+            value={personalInfo.location}
+            variant="static"
+            staggerClass="stagger-3"
+          />
         </div>
 
         {/* Contact Form */}
         <div className="glass-card animated-border p-5 md:p-6 animate-slide-up stagger-3 mb-10 backdrop-blur-xl bg-slate-900/60">
-          <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5 text-center">Envoyez un message</h3>
+          <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5 text-center">
+            Envoyez un message
+          </h3>
+
           <form onSubmit={onFormSubmit} className="space-y-3.5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               <div>
-                <label htmlFor="name" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Nom</label>
+                <label htmlFor="name" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">
+                  Nom
+                </label>
                 <input
                   type="text"
                   id="name"
@@ -121,8 +109,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   className="w-full p-2.5 rounded-lg text-sm text-white bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
                 />
               </div>
+
               <div>
-                <label htmlFor="email" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Email</label>
+                <label htmlFor="email" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -134,8 +125,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 />
               </div>
             </div>
+
             <div>
-              <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Sujet</label>
+              <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">
+                Sujet
+              </label>
               <input
                 type="text"
                 id="subject"
@@ -145,8 +139,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 className="w-full p-2.5 rounded-lg text-sm text-white bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
               />
             </div>
+
             <div>
-              <label htmlFor="message" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Message</label>
+              <label htmlFor="message" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"
@@ -157,6 +154,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 className="w-full p-2.5 rounded-lg text-sm text-white resize-none bg-black/40 backdrop-blur-md border border-white/20 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400"
               />
             </div>
+
             <div>
               <MovingBorderButton
                 type="submit"
@@ -176,8 +174,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </div>
               </MovingBorderButton>
             </div>
-            {status === 'success' && <p className="text-green-400 text-center text-sm">✅ Message envoyé avec succès sur votre Yahoo !</p>}
-            {status === 'error' && <p className="text-red-400 text-center text-sm">❌ Erreur lors de l'envoi. Veuillez réessayer.</p>}
+
+            {status === 'success' && (
+              <p className="text-green-400 text-center text-sm">
+                ✅ Message envoyé avec succès sur votre Yahoo !
+              </p>
+            )}
+
+            {status === 'error' && (
+              <p className="text-red-400 text-center text-sm">
+                ❌ Erreur lors de l'envoi. Veuillez réessayer.
+              </p>
+            )}
           </form>
         </div>
 
@@ -188,17 +196,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {interests.map((interest, idx) => (
-              <div
-                key={idx}
-                className="p-3 backdrop-blur-md bg-slate-800/40 rounded-xl hover:bg-slate-800/60 hover:glow-primary transition-all hover:scale-105"
-              >
-                <p className="text-xl mb-1.5">{interest.emoji}</p>
-                <p className="font-semibold text-white text-sm mb-1">{interest.title}</p>
-                <p className="text-xs text-neutral-200 leading-snug">
-                  {interest.description}
-                </p>
-              </div>
+            {interests.map((interest, index) => (
+              <InterestCard key={index} interest={interest} />
             ))}
           </div>
         </div>
