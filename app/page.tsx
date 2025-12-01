@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { FloatingNav } from "@/components/ui/floating-navbar";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
-import { Timeline } from "@/components/ui/timeline";
 import { MovingBorderButton } from "@/components/ui/moving-border";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
@@ -28,6 +27,9 @@ import type { ContactFormData, FormStatus } from "@/types/portfolio";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
+import { ExperienceSection } from "@/components/sections/ExperienceSection";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
+import { ContactSection } from "@/components/sections/ContactSection";
 
 const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
@@ -87,35 +89,6 @@ export default function PortfolioUpgraded() {
   }));
 
 
-  const timelineData = experiences.map((exp) => ({
-    title: exp.year,
-    content: (
-      <div className="glass-card glow-primary animate-slide-up p-4 md:p-5">
-        <h3 className="gradient-text-primary text-xl md:text-2xl font-bold mb-2 leading-tight">{exp.title}</h3>
-        <p className="gradient-text-secondary text-base md:text-lg font-semibold mb-1">{exp.company}</p>
-        <p className="text-neutral-400 text-xs md:text-sm mb-3">{exp.location}</p>
-        <p className="text-neutral-300 text-sm md:text-base mb-3 leading-relaxed">{exp.description}</p>
-        <ul className="space-y-1.5 mb-3">
-          {exp.points.map((point, idx) => (
-            <li key={idx} className="flex items-start gap-2 text-neutral-400 text-xs md:text-sm">
-              <span className="text-cyan-400 mt-0.5 flex-shrink-0">•</span>
-              <span className="leading-snug">{point}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-wrap gap-1.5">
-          {exp.skills.map((skill, idx) => (
-            <span
-              key={idx}
-              className="px-2 py-0.5 bg-blue-500/20 border border-blue-500/30 rounded-full text-[10px] md:text-xs text-blue-300 hover:bg-blue-500/30 hover:scale-105 transition-all cursor-default"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-    ),
-  }));
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-hidden">
@@ -142,252 +115,20 @@ export default function PortfolioUpgraded() {
       <SkillsSection skills={skills} />
 
       {/* Experience Section */}
-      <section id="experience" className="relative py-20 px-4">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
-            Parcours
-          </h2>
-
-          <div className="pt-2">
-            <Timeline data={timelineData} />
-          </div>
-        </div>
-      </section>
+      <ExperienceSection experiences={experiences} />
 
       {/* Projects Section */}
-      <section id="projects" className="relative py-20 px-4">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
-            Projets
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, idx) => (
-              <CardContainer key={idx} containerClassName="w-full h-full">
-                <CardBody className="glass-card group/card relative w-full h-full hover:glow-combined transition-all duration-300 p-4 md:p-5 flex flex-col backdrop-blur-xl bg-slate-900/60">
-                  <div className="flex-grow space-y-2">
-                    <CardItem translateZ="50" className="text-lg md:text-xl font-bold">
-                      <span className="gradient-text-primary leading-tight">{project.title}</span>
-                    </CardItem>
-                    <CardItem as="p" translateZ="60" className="text-neutral-200 text-xs md:text-sm leading-snug">
-                      {project.description}
-                    </CardItem>
-                  </div>
-                  
-                  <div className="mt-auto pt-3 space-y-3">
-                    <CardItem translateZ="80" className="w-full">
-                      <div className="flex flex-wrap gap-1.5">
-                        {project.tags.slice(0, 3).map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-0.5 bg-blue-500/30 border border-blue-400/40 rounded-md text-[10px] md:text-xs text-blue-200 whitespace-nowrap"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </CardItem>
-                    <div className="flex justify-end items-center">
-                      <CardItem
-                        translateZ={40}
-                        as="a"
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 btn-glow transition-all"
-                        aria-label={`Voir ${project.title}`}
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </CardItem>
-                    </div>
-                  </div>
-                </CardBody>
-              </CardContainer>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProjectsSection projects={projects} />
 
-      {/* Contact Section avec PulseBeams */}
-      <section id="contact" className="relative py-20 px-4">
-        {/* PulseBeams pour cette section */}
-        <div className="absolute inset-0 z-0 opacity-20">
-          <PulseBeams
-            beams={PULSE_BEAMS_CONFIG}
-            gradientColors={GRADIENT_COLORS}
-            className="bg-transparent"
-          />
-        </div>
-
-        <div className="max-w-4xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-6 animate-slide-up drop-shadow-2xl">
-            Contact
-          </h2>
-          <p className="text-base md:text-lg text-neutral-200 text-center mb-10 animate-slide-up stagger-1 drop-shadow-lg">
-            Discutons de projets et d'opportunités !
-          </p>
-
-          {/* Contact Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in p-3.5 backdrop-blur-xl bg-slate-900/60"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
-                  <Mail className="h-5 w-5 text-blue-300" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-neutral-300 mb-0.5">Email</p>
-                  <p className="text-white font-semibold text-sm truncate">{personalInfo.email}</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              href={`tel:${personalInfo.phone.replace(/\s/g, "")}`}
-              className="glass-card animated-border shimmer hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-1 p-3.5 backdrop-blur-xl bg-slate-900/60"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
-                  <Phone className="h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-neutral-300 mb-0.5">Téléphone</p>
-                  <p className="text-white font-semibold text-sm">{personalInfo.phone}</p>
-                </div>
-              </div>
-            </a>
-
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass-card animated-border shimmer hover:glow-primary transition-all hover:scale-105 animate-scale-in stagger-2 p-3.5 backdrop-blur-xl bg-slate-900/60"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-blue-500/30 rounded-lg pulse-glow flex-shrink-0">
-                  <Linkedin className="h-5 w-5 text-blue-300" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-neutral-300 mb-0.5">LinkedIn</p>
-                  <p className="text-white font-semibold text-sm">zakaria-rahou</p>
-                </div>
-              </div>
-            </a>
-
-            <div className="glass-card hover:glow-secondary transition-all hover:scale-105 animate-scale-in stagger-3 p-3.5 backdrop-blur-xl bg-slate-900/60">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-cyan-500/30 rounded-lg pulse-glow flex-shrink-0">
-                  <MapPin className="h-5 w-5 text-cyan-300" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-neutral-300 mb-0.5">Localisation</p>
-                  <p className="text-white font-semibold text-sm truncate">{personalInfo.location}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Formulaire */}
-          <div className="glass-card animated-border p-5 md:p-6 animate-slide-up stagger-3 mb-10 backdrop-blur-xl bg-slate-900/60">
-            <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5 text-center">Envoyez un message</h3>
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                <div>
-                  <label htmlFor="name" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Nom</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    name="name" 
-                    value={formData.name} 
-                    onChange={handleChange} 
-                    required 
-                    className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    value={formData.email} 
-                    onChange={handleChange} 
-                    required 
-                    className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Sujet</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  name="subject" 
-                  value={formData.subject} 
-                  onChange={handleChange} 
-                  className="w-full p-2.5 rounded-lg form-input text-sm text-white bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400" 
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-xs md:text-sm font-medium text-neutral-300 mb-1.5">Message</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  value={formData.message} 
-                  onChange={handleChange} 
-                  rows={4} 
-                  required 
-                  className="w-full p-2.5 rounded-lg form-input text-sm text-white resize-none bg-black/40 backdrop-blur-md border-white/20 focus:border-blue-400 focus:ring-blue-400"
-                />
-              </div>
-              <div>
-                <MovingBorderButton
-                  type="submit"
-                  disabled={status === 'sending'}
-                  className="w-full btn-glow bg-slate-900/80 backdrop-blur-sm text-white border-slate-800"
-                  borderRadius="1.75rem"
-                >
-                  <div className="flex items-center justify-center gap-2 text-sm md:text-base">
-                    {status === 'sending' ? (
-                      'Envoi en cours...'
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4" />
-                        Envoyer
-                      </>
-                    )}
-                  </div>
-                </MovingBorderButton>
-              </div>
-              {status === 'success' && <p className="text-green-400 text-center text-sm">✅ Message envoyé avec succès sur votre Yahoo !</p>}
-              {status === 'error' && <p className="text-red-400 text-center text-sm">❌ Erreur lors de l'envoi. Veuillez réessayer.</p>}
-            </form>
-          </div>
-
-          {/* Interests */}
-          <div className="glass-card animated-border animate-slide-up stagger-4 p-5 md:p-6 backdrop-blur-xl bg-slate-900/60">
-            <h3 className="gradient-text-secondary text-xl md:text-2xl font-bold mb-5">
-              Centres d'Intérêt
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {interests.map((interest, idx) => (
-                <div
-                  key={idx}
-                  className="p-3 backdrop-blur-md bg-slate-800/40 rounded-xl hover:bg-slate-800/60 hover:glow-primary transition-all hover:scale-105"
-                >
-                  <p className="text-xl mb-1.5">{interest.emoji}</p>
-                  <p className="font-semibold text-white text-sm mb-1">{interest.title}</p>
-                  <p className="text-xs text-neutral-200 leading-snug">
-                    {interest.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Contact Section */}
+      <ContactSection
+        personalInfo={personalInfo}
+        interests={interests}
+        formData={formData}
+        status={status}
+        onFormChange={handleChange}
+        onFormSubmit={handleSubmit}
+      />
 
       {/* Footer */}
       <footer className="relative py-6 px-4 border-t border-white/10 backdrop-blur-xl bg-slate-900/40">
