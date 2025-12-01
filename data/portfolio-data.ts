@@ -1,4 +1,6 @@
-export const personalInfo = {
+import type { PersonalInfo, Skill, Experience, Project, Interest, Testimonial } from "@/types/portfolio";
+
+export const personalInfo: PersonalInfo = {
   name: "Zakaria RAHOU",
   title: "Computer Science & Data Engineering Student",
   description:
@@ -12,7 +14,7 @@ export const personalInfo = {
 
 // -------------------------------------------------------------
 
-export const skills = [
+export const skills: Skill[] = [
   {
     title: "Langages de Programmation",
     skills: ["Python", "Java", "C++", "JavaScript", "TypeScript", "SQL", "HTML", "CSS"],
@@ -68,7 +70,7 @@ export const skills = [
 
 // -------------------------------------------------------------
 
-export const experiences = [
+export const experiences: Experience[] = [
   {
     year: "2023 - 2027",
     title: "Ecole d'ingénieur - Informatique & Ingénierie des Données",
@@ -103,7 +105,7 @@ export const experiences = [
 
 // -------------------------------------------------------------
 
-export const projects = [
+export const projects: Project[] = [
   {
     title: "Dashboard de Suivi des Compétences Étudiantes",
     description:
@@ -198,7 +200,7 @@ export const projects = [
 
 // -------------------------------------------------------------
 
-export const interests = [
+export const interests: Interest[] = [
   {
     emoji: "✈️",
     title: "Expérience Internationale",
@@ -227,7 +229,7 @@ export const interests = [
 
 // -------------------------------------------------------------
 
-export const testimonials = [
+export const testimonials: Testimonial[] = [
   {
     quote:
       "Zakaria est un développeur talentueux avec une grande capacité d'apprentissage. Son approche scientifique apporte une réelle rigueur aux projets.",

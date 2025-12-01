@@ -29,6 +29,7 @@ import { MovingBorderButton } from "@/components/ui/moving-border";
 import { PulseBeams } from "@/components/ui/pulse-beams";
 import { personalInfo, skills, experiences, projects, interests } from "@/data/portfolio-data";
 import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS, NAV_ITEMS, TYPEWRITER_WORDS } from "@/constants/portfolio";
+import type { ContactFormData, FormStatus } from "@/types/portfolio";
 
 const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
@@ -36,9 +37,9 @@ const AnimatedBackground = dynamic(() => import('@/components/ui/animated-backgr
 });
 
 export default function PortfolioUpgraded() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [activeSection, setActiveSection] = useState<string>("home");
+  const [formData, setFormData] = useState<ContactFormData>({ name: '', email: '', subject: '', message: '' });
+  const [status, setStatus] = useState<FormStatus>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
