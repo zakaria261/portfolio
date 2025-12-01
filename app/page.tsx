@@ -18,7 +18,6 @@ import {
   Send,
 } from "lucide-react";
 import { FloatingNav } from "@/components/ui/floating-navbar";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { CardContainer, CardBody, CardItem } from "@/components/ui/3d-card";
 import { Timeline } from "@/components/ui/timeline";
 import { MovingBorderButton } from "@/components/ui/moving-border";
@@ -28,6 +27,7 @@ import { PULSE_BEAMS_CONFIG, GRADIENT_COLORS, NAV_ITEMS } from "@/constants/port
 import type { ContactFormData, FormStatus } from "@/types/portfolio";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
+import { SkillsSection } from "@/components/sections/SkillsSection";
 
 const AnimatedBackground = dynamic(() => import('@/components/ui/animated-background'), {
   ssr: false,
@@ -86,17 +86,6 @@ export default function PortfolioUpgraded() {
     icon: <Code className="h-4 w-4" />
   }));
 
-  const getSkillIcon = (iconName: string) => {
-    const icons: { [key: string]: React.ReactNode } = {
-      code: <Code className="h-6 w-6 text-blue-400" />,
-      globe: <Globe className="h-6 w-6 text-cyan-400" />,
-      database: <Database className="h-6 w-6 text-blue-400" />,
-      tool: <Wrench className="h-6 w-6 text-cyan-400" />,
-      brain: <Brain className="h-6 w-6 text-blue-400" />,
-      heart: <Heart className="h-6 w-6 text-cyan-400" />,
-    };
-    return icons[iconName] || <Code className="h-6 w-6 text-blue-400" />;
-  };
 
   const timelineData = experiences.map((exp) => ({
     title: exp.year,
@@ -150,41 +139,7 @@ export default function PortfolioUpgraded() {
       <AboutSection personalInfo={personalInfo} />
 
       {/* Skills Section */}
-      <section id="skills" className="relative py-20 px-4">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="gradient-text text-4xl md:text-6xl font-bold text-center mb-12 animate-slide-up drop-shadow-2xl">
-            Compétences
-          </h2>
-
-          <BentoGrid className="max-w-6xl mx-auto">
-            {skills.map((skill, idx) => (
-              <BentoGridItem
-                key={idx}
-                title={<span className="gradient-text-primary text-base md:text-lg">{skill.title}</span>}
-                description={<span className="text-xs md:text-sm leading-snug text-neutral-200">{skill.description}</span>}
-                header={
-                  <div className="flex items-center gap-2 p-2">
-                    {getSkillIcon(skill.icon)}
-                  </div>
-                }
-                className={`animate-slide-up stagger-${(idx % 5) + 1} p-4 md:p-5 backdrop-blur-xl bg-slate-900/50`}
-                icon={
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {skill.skills.map((s, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-0.5 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 border border-blue-400/40 rounded-full text-[10px] md:text-xs text-blue-200 hover:scale-105 transition-transform cursor-default whitespace-nowrap"
-                      >
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                }
-              />
-            ))}
-          </BentoGrid>
-        </div>
-      </section>
+      <SkillsSection skills={skills} />
 
       {/* Experience Section */}
       <section id="experience" className="relative py-20 px-4">
